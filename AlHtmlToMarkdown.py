@@ -1,7 +1,7 @@
 import markdownify
 import os
 from tkinter import*
-from tkinter import font
+from tkinter import font, filedialog
 from PIL import ImageTk, Image
 
 cwd = os.path.dirname(os.path.realpath(__file__))
@@ -11,7 +11,7 @@ class AlHtmlToMarkdown():
     
     def __init__(self):
         root = Tk(className = " ALHTMLTOMARKDOWN ")
-        root.geometry("400x175+1500+840")
+        root.geometry("400x200+1500+815")
         root.resizable(0,0)
         root.iconbitmap(os.path.join(cwd+'\\UI\\icons', 'alhtmltomarkdown.ico'))
         root.config(bg="#6a199b")
@@ -32,9 +32,14 @@ class AlHtmlToMarkdown():
             root.overrideredirect(0)
             root.iconify()
 
+        def openHtml():
+            fileTextEntry.delete(1.0, END)
+            filename = filedialog.askopenfilename(filetypes =[('HTML Files', '*.html')])
+            fileTextEntry.insert(1.0, filename)
+
         def markdown():
-            filename = fileText.get()
-            filepath = os.path.join(cwd+'\\AlHtmlToMarkdown', filename)
+            filepath = fileTextEntry.get("1.0", END)
+            filepath = filepath.replace('/', '\\')[:-1]
             if os.path.exists(filepath):
                 extension = os.path.splitext(filepath)[1]
                 try:
@@ -43,7 +48,8 @@ class AlHtmlToMarkdown():
                         html = htmlFile.read()
                         htmlFile.close()
                         markDown = markdownify.markdownify(html, heading_style="ATX")
-                        markdownFileName = filename.replace(extension,'.md')
+                        markdownFileName = os.path.basename(filepath)
+                        markdownFileName = markdownFileName.replace(extension,'.md')
                         markdownFilePath = os.path.join(cwd+'\\AlHtmlToMarkdown\\Markdown', markdownFileName)
                         markdownFile = open(markdownFilePath, "w")
                         markdownFile.writelines(markDown)
@@ -84,11 +90,11 @@ class AlHtmlToMarkdown():
         titleBar.pack(fill=X)
 
         #file widget
-        fileText = Label(root, text="HTML FILE")
-        fileText.pack()
-        fileText.config(bg=color,fg="white",font=appHighlightFont)
-        fileText= Entry(root, bg="white", fg='#7a1da3', highlightbackground=color, highlightcolor=color, highlightthickness=3, bd=0,font=textHighlightFont)
+        fileText = Button(root, text="HTML FILE", borderwidth=0, highlightthickness=3, command=openHtml)
         fileText.pack(fill=X)
+        fileText.config(bg=color,fg="white",font=appHighlightFont)
+        fileTextEntry = Text(root, bg="white", fg='#7a1da3', highlightbackground=color, highlightcolor=color, highlightthickness=3, bd=0,font=textHighlightFont, height=1)
+        fileTextEntry.pack(fill=BOTH, expand=True)
 
         #convert button
         convertToMarkdown = Button(root, borderwidth=0, highlightthickness=3, text="MARKDOWN", command=markdown)

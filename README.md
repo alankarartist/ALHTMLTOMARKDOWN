@@ -15,5 +15,5 @@ pip install Pillow
 
 ![](/CaptureMarkdown.jpg)
 
-1. Provide the input as given in above image.
+1. Click on HTML FILE button and then select the html file.
 2. Then, click on MARKDOWN button.
