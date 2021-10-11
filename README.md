@@ -17,3 +17,9 @@ pip install Pillow
 
 1. Click on HTML FILE button and then select the html file.
 2. Then, click on MARKDOWN button.
+
+## Contributor
+
+<a href="https://github.com/alankarartist/ALHTMLTOMARKDOWN/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=alankarartist/ALHTMLTOMARKDOWN" />
+</a>
