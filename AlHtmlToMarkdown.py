@@ -3,8 +3,10 @@ import os
 from tkinter import Tk, END, Frame, SUNKEN, X, Text, BOTH
 from tkinter import font, filedialog, Label, Button
 from PIL import ImageTk, Image
+import platform
 
 cwd = os.path.dirname(os.path.realpath(__file__))
+systemName = platform.system()
 
 
 class AlHtmlToMarkdown():
@@ -13,8 +15,11 @@ class AlHtmlToMarkdown():
         root = Tk(className=" ALHTMLTOMARKDOWN ")
         root.geometry("400x200+1500+815")
         root.resizable(0, 0)
-        root.iconbitmap(os.path.join(cwd+'\\UI\\icons',
-                                     'alhtmltomarkdown.ico'))
+        iconPath = os.path.join(cwd+'\\UI\\icons',
+                                'alhtmltomarkdown.ico')
+        if systemName == 'Darwin':
+            iconPath = iconPath.replace('\\','/')
+        root.iconbitmap(iconPath)
         root.config(bg="#6a199b")
         root.overrideredirect(1)
         color = '#6a199b'
@@ -46,6 +51,8 @@ class AlHtmlToMarkdown():
         def markdown():
             filepath = fileTextEntry.get("1.0", END)
             filepath = filepath.replace('/', '\\')[:-1]
+            if systemName == 'Darwin':
+                filepath = filepath.replace('\\','/')
             if os.path.exists(filepath):
                 extension = os.path.splitext(filepath)[1]
                 try:
@@ -61,6 +68,9 @@ class AlHtmlToMarkdown():
                         markdownFilePath = os.path.join(cwd+'\\AlHtmlTo'
                                                         'Markdown\\Markdown',
                                                         markdownFileName)
+                        if systemName == 'Darwin':
+                            markdownFilePath = markdownFilePath.replace('\\',
+                                                                        '/')
                         markdownFile = open(markdownFilePath, "w")
                         markdownFile.writelines(markDown)
                         markdownFile.close()
@@ -81,8 +91,7 @@ class AlHtmlToMarkdown():
                                      weight='bold')
 
         titleBar = Frame(root, bg='#141414', relief=SUNKEN, bd=0)
-        icon = Image.open(os.path.join(cwd+'\\UI\\icons',
-                                       'alhtmltomarkdown.ico'))
+        icon = Image.open(iconPath)
         icon = icon.resize((30, 30), Image.ANTIALIAS)
         icon = ImageTk.PhotoImage(icon)
         iconLabel = Label(titleBar, image=icon)
