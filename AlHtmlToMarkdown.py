@@ -3,10 +3,8 @@ import os
 from tkinter import Tk, END, Frame, SUNKEN, X, Text, BOTH
 from tkinter import font, filedialog, Label, Button
 from PIL import ImageTk, Image
-import platform
 
 cwd = os.path.dirname(os.path.realpath(__file__))
-systemName = platform.system()
 
 
 class AlHtmlToMarkdown():
@@ -17,8 +15,6 @@ class AlHtmlToMarkdown():
         root.resizable(0, 0)
         iconPath = os.path.join(cwd+'\\UI\\icons',
                                 'alhtmltomarkdown.ico')
-        if systemName == 'Darwin':
-            iconPath = iconPath.replace('\\','/')
         root.iconbitmap(iconPath)
         root.config(bg="#6a199b")
         root.overrideredirect(1)
@@ -51,8 +47,6 @@ class AlHtmlToMarkdown():
         def markdown():
             filepath = fileTextEntry.get("1.0", END)
             filepath = filepath.replace('/', '\\')[:-1]
-            if systemName == 'Darwin':
-                filepath = filepath.replace('\\','/')
             if os.path.exists(filepath):
                 extension = os.path.splitext(filepath)[1]
                 try:
@@ -68,9 +62,6 @@ class AlHtmlToMarkdown():
                         markdownFilePath = os.path.join(cwd+'\\AlHtmlTo'
                                                         'Markdown\\Markdown',
                                                         markdownFileName)
-                        if systemName == 'Darwin':
-                            markdownFilePath = markdownFilePath.replace('\\',
-                                                                        '/')
                         markdownFile = open(markdownFilePath, "w")
                         markdownFile.writelines(markDown)
                         markdownFile.close()
@@ -140,8 +131,7 @@ class AlHtmlToMarkdown():
         titleBar.bind("<Button-3>", showScreen)
         titleBar.bind("<Map>", screenAppear)
 
-        if systemName == 'Windows':
-            liftWindow()
+        liftWindow()
         root.mainloop()
 
 
